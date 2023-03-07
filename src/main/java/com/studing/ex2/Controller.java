@@ -32,26 +32,31 @@ public class Controller {
     void decrypt(ActionEvent event) {
         String text = Utils.readFromFile(FILE);
         encryptedField.setText("");
-        decryptedField.setText(change(text, -STEP));
+        decryptedField.setText(change(text, false));
         fileText.setText(text);
+
+
     }
 
     @FXML
     void encrypt(ActionEvent event) {
         String text = Utils.readFromFile(FILE);
         decryptedField.setText("");
-        encryptedField.setText(change(text, STEP));
+        encryptedField.setText(change(text, true));
         fileText.setText(text);
     }
 
-    private String change(String str, int step) {
+    private String change(String str, boolean plus) {
         StringBuilder builder = new StringBuilder();
+        int[] arr = keyToArr(KEY);
+        int i = 0;
         for(String c: str.split("")) {
             if(contains(ukrainianAlphabet, c)) {
-                builder.append(findNewChar(ukrainianAlphabet, step, c));
+                builder.append(findNewChar(ukrainianAlphabet, plus ? arr[i] : -arr[i], c));
             } else {
                 builder.append(c);
             }
+            i = i == arr.length-1 ? 0 : i+1;
         }
         return builder.toString();
     }
@@ -67,11 +72,12 @@ public class Controller {
         return c.toLowerCase().equals(c) ? newChar : newChar.toUpperCase();
     }
 
-    private String[] keyToArr(String key) {
-        String[] arr = new String[key.length()];
+    private int[] keyToArr(String key) {
+        int[] arr = new int[key.length()];
         for(int i = 0; i < key.length(); i++) {
-                        
+            arr[i] = Arrays.asList(ukrainianAlphabet).indexOf(String.valueOf(key.charAt(i)));
         }
+        return arr;
     }
 
     private boolean contains(String[] arr, String c) {

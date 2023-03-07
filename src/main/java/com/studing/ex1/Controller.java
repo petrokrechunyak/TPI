@@ -4,6 +4,7 @@ import com.studing.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import java.util.Arrays;
 
@@ -25,28 +26,40 @@ public class Controller {
     private static String FILE = "file.txt";
 
     @FXML
-    private Label encryptedField;
+    private TextField encryptedField;
 
     @FXML
-    private Label decryptedField;
+    private TextField decryptedField;
 
     @FXML
     private Label fileText;
 
     @FXML
-    void decrypt(ActionEvent event) {
+    private Label decryptedLabel;
+
+    @FXML
+    private Label encryptedLabel;
+
+    @FXML
+    void decrypt_keyboard(ActionEvent event) {
         String text = Utils.readFromFile(FILE);
-        encryptedField.setText("");
-        decryptedField.setText(change(text, -STEP));
-        fileText.setText(text);
+        decryptedField.setText(change(encryptedField.getText(), -STEP));
     }
 
     @FXML
-    void encrypt(ActionEvent event) {
+    void encrypt_keyboard(ActionEvent event) {
         String text = Utils.readFromFile(FILE);
-        decryptedField.setText("");
-        encryptedField.setText(change(text, STEP));
-        fileText.setText(text);
+        encryptedField.setText(change(decryptedField.getText(), STEP));
+    }
+    @FXML
+    void decrypt_file(ActionEvent event) {
+        
+    }
+
+    @FXML
+    void encrypt_file(ActionEvent event) {
+
+
     }
 
     private String change(String str, int step) {
